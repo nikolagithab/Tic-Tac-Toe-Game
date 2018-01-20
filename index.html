@@ -1,1 +1,253 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="utf-8">
+			<title>Tic Tac Toe</title>
+			<!--
+			Author: Nikola Petrovski 
+			Date created: 19 V 2017
+			Date updated: 22 V 2017
+			Version: 2
+			Source: Ellen Bajcar. Assignment 3, 
+			SYST10049 Web Development, Sheridan College
+			Source: coding4.us
+			Purpose: 
+				Develop and publish a webpage for members to play a 
+				TICTACTOE game that adhere to the given specifications.
+				Assignment 1 for SYST10199 Web Programming at Sheridan 
+				College during Summer 2017 term is the first bit of 
+				experience at writing some JavaScript, in order to gain
+				a basic understanding of what writing a JavaScript 
+				program involves. This is an obtrusive version for 
+				documenting the first splash into JavaScript. The tic
+				tac	toe code from above referenced sources is used for
+				learning purposes only. One of the hardest things to 
+				learn in programming is not the syntax, but how to 
+				apply it to solve real world problems.
+			Description:
+				This assignment shows how to buld up a TICTACTOE Game. 
+				It should choose a random start person between player 
+				"X" and	player "O", then challenge the player to align 
+				three of his/her tokens. After each turn the player 
+				should be told whose turn it is and if there are wrong 
+				overriding entries. The game will end once the player 
+				alignes three tokens correctly, or once they run out of 
+				available entries. When the game ends, the players 
+				are given an option to start playing again.
+			-->
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			
+			<style>
+				main {
+					text-align: center;
+						width: 100%;
+				}
+				table {
+					margin: 25px auto;
+					padding: 18px;
+					background-color: white;
+					color: green;
+					font-family: Helvetica,Arial,"Lucida Grande",sans-serif;
+				}
+				td {
+					height: 70px;
+					width: 70px;
+					font-size: 2em;
+					font-family: sans-serif;
+					border: 1px solid green;
+					background-color: transparent;
+				}
+				td:nth-child(1) 
+					{border-left-style: none;}
+				td:nth-child(3) 
+					{border-right-style: none;}
+				tr:nth-child(1)>td 
+					{border-top-style: none;}
+				tr:nth-child(3)>td 
+					{border-bottom-style: none;}
+				
+				header 
+					{text-align: center;}
+				footer 
+					{text-align: center;}	
+				
+				@media all and ( max-device-width: 640px ) and 
+				( max-width: 640px ){
+					table {
+						width: 100%;
+						margin: 25px auto;
+						padding: 18px;
+						background-color: white;
+						color: GREEN;
+						font-family: Helvetica,Arial,"Lucida Grande",sans-serif;
+					}
+					header {
+						display: none;
+						text-align: center;
+					}
+					h3 {		
+						font-size: 2em; 
+						margin:0; 
+						padding:0;
+					}	
+				}
+			</style>
+			
+		</head>
+		
+		<!-- The onload is event attribute. It is used to execute below 
+		JavaScript function immediately after a page has been loaded. 
+		NOTE: Placing scripts at the bottom of the <body> element improves the 
+		display speed, because script compilation slows down the display. 
+		See respective JavaScript comments.-->
+		<body onload="startGame();">
+			<header>
+				<h1>Welcome to TicTacToe</h1>
+				<h2>SYST10199 Web Programming</h2>
+			</header>
+			<main>
+				<!-- The id attribute specifies a unique id for an HTML element
+				(the value must be unique within the HTML document). The 
+				id attribute is most used by JavaScript (via the HTML DOM) to 
+				manipulate the element with the specific id. -->
+				<h3 id="message">Tic Tac Toe</h3>
+				<table>
+					<tr>
+						<!-- Similar to the onclick and id. The class attribute
+						specifies one common classname (SQ) for all 9 <td> 
+						elements. The class attribute is used by the JavaScript
+						(via HTML DOM) to make changes to HTML elements <td>. 
+						The "nextMove(this)" represents a function. It is a 
+						block of code designed to perform particular task 
+						as listed below in the JavaScript comments.-->
+						<td id="s1" class="SQ" onclick="nextMove(this);"></td>
+						<td id="s2" class="SQ" onclick="nextMove(this);"></td>
+						<td id="s3" class="SQ" onclick="nextMove(this);"></td>
+					</tr>
+					<tr>
+						<td id="s4" class="SQ" onclick="nextMove(this);"></td>
+						<td id="s5" class="SQ" onclick="nextMove(this);"></td>
+						<td id="s6" class="SQ" onclick="nextMove(this);"></td>
+					</tr>
+					<tr>
+						<td id="s7" class="SQ" onclick="nextMove(this);"></td>
+						<td id="s8" class="SQ" onclick="nextMove(this);"></td>
+						<td id="s9" class="SQ" onclick="nextMove(this);"></td>
+					</tr>        
+				</table>
+				<!-- The "startGame()" represents a function. 
+				See respective JavaScript comments.-->
+				<p><button onclick="startGame();">Start A Game</button></p>
+			</main>
+			<footer> 
+				<address>Nikola Petrovski, 2017 &copy; 
+				SYST10199 Web Programming, Sheridan College</address>
+			</footer>
+			
+		<script>
+			/* The function executes when user loads
+			page or clicks button "Start A Game". */
+			function startGame() {  // Clears out all boxes.
+				for (var i = 1; i <= 9; i++) { 
+				clearBox(i);  // Activates following function.
+				}
+
+			// Replaces values of s1,s2,s3,...s9 with empty value.
+			function clearBox(number) {   
+				document.getElementById("s" + number).innerText = "";
+			}
+			
+			turn = "X"; // Initializes player's turn with "X".
+			// Evaluates 50:50 chances for both players to start a game.
+			if (Math.random() < 0.5) { 
+				turn = "O";  // Updates player's turn "X" to "O" conditionally.
+			}
+			
+			winner = null; // Empties value for winner.
+			
+			// Provides info. who starts first.
+			setMessage(turn + " starts first."); 
+			}
+
+			// Gets element of "message" and then sets it's updated value.
+			function setMessage(msg) {  
+				document.getElementById("message").innerText = msg;
+			}
+			
+			// The function executes when user clicks on Square.
+			function nextMove(cell) {
+				// Represents the case when there is a winner.
+				if (winner != null) {  
+					// Provides info. who won.
+					setMessage(winner + " already won the game."); 
+				// Represents the case when game is in progress.
+				} else if (cell.innerText == "") { 
+					// Updates "empty cell" to "X" or "O" conditionally.
+					cell.innerText = turn;  
+					switchTurn();  // Activates following function.
+				} else { // Represents the case when a Square in not available.
+					setMessage("That Square is Already Used.");  
+				}
+			}
+
+			// The function executes conditionally within "nextMove" function.
+			function switchTurn() {
+				// Represents the case when a turn becomes a winner.
+				if (checkForWinner(turn)) {  
+					setMessage("Congratulations, " + turn + "!  You won!");
+					winner = turn; // Updates from turn to winner conditionally.
+				// Represents the case when game must go on.
+				} else if (turn == "X") {  
+					turn = "O";  // Switches from "X" to "O" conditionally.
+					setMessage("It's " + turn + "'s turn!");
+				} else {  // Represents the case when there is a winner.
+					turn = "X";  // Updates from "O" to "X" conditionally.
+					setMessage("It's " + turn + "'s turn!");
+				}
+			}
+
+			/* The function executes conditionally within "switchTurn" function.
+			   Returns boolean value for test of existance of "winning" line.*/
+			function checkForWinner(move) {  
+				// Declares and Initializes a local variable "result".
+				var result = false;  
+				// Compares if any of 9 line combinations is true.
+				if (checkLine(1, 2, 3, move) ||  
+					checkLine(4, 5, 6, move) ||
+					checkLine(7, 8, 9, move) || 
+					checkLine(1, 4, 7, move) ||
+					checkLine(2, 5, 8, move) ||
+					checkLine(3, 6, 9, move) ||
+					checkLine(1, 5, 9, move) ||
+					checkLine(3, 5, 7, move)) {
+					
+					result = true;
+				}
+				return result;
+			}
+
+			/*  The function executes conditionally within "checkForWinner" 
+				function. Returns boolean value for test of three same tokens 
+				in a line. */
+			function checkLine(a, b, c, move) {  
+				// Declares and Initializes a local variable "result".
+				var result = false;  
+				// Compares if all 4 parameters are equal.
+				if (getBox(a) == move && 
+					getBox(b) == move && 
+					getBox(c) == move) { 
+					result = true;// Updates result false to true conditionally.
+				}
+				return result;
+			}
+
+			/*  The function executes within "checkLine" function. 
+				Returns current value for Squares: s1,s2,s3,..s9 in the table.*/
+			function getBox(number) {  
+				return document.getElementById("s" + number).innerText;
+			}
+		</script>
+			
+		</body>
+	</html>
 
